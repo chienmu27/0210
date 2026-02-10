@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動報名與查詢系統</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; text-align: center; }
+        .nav-buttons { margin-bottom: 20px; }
+        .btn { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; background-color: #007bff; color: white; border-radius: 5px; margin: 5px; transition: 0.3s; }
+        .btn:hover { background-color: #0056b3; }
+        .section { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
+        .active { display: block; }
+        iframe { width: 100%; height: 700px; border: none; }
+        .search-box { margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
+        .result-card { text-align: left; border-left: 5px solid #007bff; padding: 15px; margin-bottom: 20px; background: #fafafa; border-bottom: 1px solid #eee; }
+        .result-card p { margin: 5px 0; line-height: 1.6; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <h1>活動報名系統</h1>
+
+    <div class="nav-buttons">
+        <button class="btn" onclick="showSection('form-section')">報名表單</button>
+        <button class="btn" onclick="showSection('search-section')">報名結果查詢</button>
+    </div>
+
+    <!-- 報名表單區塊 -->
+    <div id="form-section" class="section active">
+        <!-- 請將下方的 src 替換成你的 Google 表單內嵌連結 -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScz7tT5C26G5mK93i8RntQ2uY9h9_D-2C6_19m9Uf4I_R1XwQ/viewform?embedded=true">載入中…</iframe>
+    </div>
+
+    <!-- 報名查詢區塊 -->
+    <div id="search-section" class="section">
+        <div class="search-box">
+            <h3>請輸入身分證字號後5碼進行驗證</h3>
+            <input type="text" id="idInput" placeholder="例如: 12345" maxlength="5">
+            <button class="btn" onclick="searchData()">查詢</button>
+        </div>
+        <div id="result-area"></div>
+    </div>
+
+    <script>
+        // *** 重要：請將此處替換為你部署的 Google Apps Script URL ***
+        var GAS_URL = "https://script.google.com/macros/s/AKfycby0CXFWAvxrTp-OKfZbWX2GFxYV6YnTZfwRIvI4xp8GFidz2lzG4fwuUKMICA6Dc-5p/exec";
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function maskName(name) {
+            if (!name) return "";
+            if (name.length <= 2) return name.substring(0, 1) + "＊";
+            return name.substring(0, 1) + "＊" + name.substring(name.length - 1);
+        }
+
+        function maskID(id) {
+            if (!id || id.length < 10) return id;
+            // 格式：V120****26 (前4碼與後2碼可見)
+            return id.substring(0, 4) + "****" + id.substring(id.length - 2);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return "";
+            let d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
+        }
+
+        async function searchData() {
+            const idValue = document.getElementById('idInput').value.trim();
+            const resultArea = document.getElementById('result-area');
+
+            if (idValue.length !== 5) {
+                alert("請輸入正確的身分證後5碼");
+                return;
+            }
+
+            resultArea.innerHTML = '<p class="loading">查詢中，請稍候...</p>';
+
+            try {
+                const response = await fetch(`${GAS_URL}?id=${idValue}`);
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    resultArea.innerHTML = "<p style='color:red;'>查無資料，請確認輸入是否正確或尚未完成報名。</p>";
+                    return;
+                }
+
+                let html = "";
+                data.forEach(item => {
+                    html += `
+                        <div class="result-card">
+                            <p><strong>序號：</strong>${item.serial}</p>
+                            <p><strong>組別：</strong>${item.group}</p>
+                            <p><strong>選手姓名：</strong>${maskName(item.name)}</p>
+                            <p><strong>服務單位：</strong>${item.unit}</p>
+                            <p><strong>身分證字號：</strong>${maskID(item.id)}</p>
+                            <p><strong>出生年月日：</strong>${formatDate(item.birthday)}</p>
+                            <p><strong>戶籍地址：</strong>${item.address}</p>
+                        </div>
+                    `;
+                });
+                resultArea.innerHTML = html;
+
+            } catch (error) {
+                console.error(error);
+                resultArea.innerHTML = "<p style='color:red;'>查詢出錯，請稍後再試或檢查 GAS 部署設定。</p>";
+            }
+        }
+    </script>
+</body>
+</html>

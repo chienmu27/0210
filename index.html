@@ -3,275 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>市教育會報名與查詢系統</title>
+  <title>市教育會報名與查詢系統 - 羽球活力版</title>
 
   <style>
-    :root{
-      --court-green:#1f8a4c;
-      --court-green-2:#2bb673;
-      --court-line:rgba(255,255,255,.85);
-      --sky:#eaf7ff;
-      --ink:#14322a;
-      --card:#ffffffcc;
-      --shadow: 0 10px 30px rgba(0,0,0,.12);
-      --blue:#1e88ff;
-      --blue-2:#0f62d6;
-      --accent:#ffcc4d;
+    :root {
+      --court-green: #2e7d32;
+      --court-green-light: #4caf50;
+      --shuttle-white: #ffffff;
+      --sky-blue: #e3f2fd;
+      --accent-yellow: #fff176;
+      --btn-blue: #1e88ff;
+      --shadow: 0 12px 30px rgba(0,0,0,0.1);
     }
 
-    *{ box-sizing:border-box; }
+    * { box-sizing: border-box; }
 
-    body{
-      font-family:"Microsoft JhengHei", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-      margin:0;
-      padding:22px 14px 40px;
-      color:var(--ink);
-      text-align:center;
-
-      /* 可愛羽球場背景 */
-      background:
-        radial-gradient(circle at 18% 12%, rgba(255,255,255,.85) 0 10px, transparent 11px),
-        radial-gradient(circle at 82% 18%, rgba(255,255,255,.75) 0 12px, transparent 13px),
-        radial-gradient(circle at 12% 78%, rgba(255,255,255,.65) 0 9px, transparent 10px),
-        radial-gradient(circle at 88% 82%, rgba(255,255,255,.7) 0 10px, transparent 11px),
-        linear-gradient(180deg, var(--sky) 0%, #dff3ff 20%, #cfefff 35%, #bfe7ff 45%, transparent 55%),
-        linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 45%, rgba(0,0,0,.06) 100%),
-        linear-gradient(135deg, var(--court-green) 0%, var(--court-green-2) 100%);
-      min-height:100vh;
-
-      /* 版面水平置中、垂直靠上 */
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
+    body {
+      font-family: "Microsoft JhengHei", system-ui, sans-serif;
+      margin: 0;
+      padding: 30px 15px;
+      color: #1b5e20;
+      /* 可愛羽球運動背景 */
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 20%),
+        linear-gradient(135deg, var(--sky-blue) 0%, #c8e6c9 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* 垂直靠上 */
     }
 
-    /* 外框容器 */
-    .wrap{
-      width:min(980px, 100%);
-      margin:0 auto;
+    .wrap {
+      width: min(900px, 100%);
+      animation: fadeIn 0.8s ease-out;
     }
 
-    /* 標題區 */
-    .title{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-      margin:6px 0 14px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .title-badge{
-      width:44px;height:44px;
-      border-radius:14px;
-      background: rgba(255,255,255,.65);
-      box-shadow: 0 8px 20px rgba(0,0,0,.12);
-      position:relative;
-      overflow:hidden;
+    /* 標題與球拍動畫 */
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
     }
 
-    /* 小球拍動畫（tab 球拍動畫） */
-    .racket{
-      position:absolute;
-      left:50%; top:50%;
-      width:26px; height:26px;
-      transform: translate(-50%,-50%) rotate(-10deg);
-      animation: racketSwing 2.2s ease-in-out infinite;
+    .title-badge {
+      width: 50px; height: 50px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    @keyframes racketSwing{
-      0%   { transform: translate(-50%,-50%) rotate(-18deg); }
-      50%  { transform: translate(-50%,-50%) rotate(14deg); }
-      100% { transform: translate(-50%,-50%) rotate(-18deg); }
+    .racket-icon {
+      width: 32px; height: 32px;
+      animation: racketSwing 2s ease-in-out infinite;
     }
 
-    h1{
-      margin:0;
-      font-size: clamp(22px, 3.2vw, 30px);
-      letter-spacing:.5px;
-      text-shadow: 0 2px 0 rgba(255,255,255,.45);
+    @keyframes racketSwing {
+      0%, 100% { transform: rotate(-15deg); }
+      50% { transform: rotate(20deg); }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(20px, 5vw, 28px);
+      background: var(--court-green);
+      color: white;
+      padding: 8px 25px;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     /* 導覽按鈕區 */
-    .nav-buttons{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:10px;
-      margin:10px 0 18px;
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
     }
 
-    .btn{
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-
-      padding:11px 18px;
-      font-size:16px;
-      cursor:pointer;
-      border:none;
-      color:white;
-      border-radius:999px;
-      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
-      box-shadow: 0 10px 22px rgba(30,136,255,.28);
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      user-select:none;
-      overflow:hidden;
-      min-width: 150px;
-    }
-
-    .btn:active{
-      transform: translateY(1px) scale(.99);
-    }
-
-    .btn:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 16px 28px rgba(30,136,255,.32);
-      filter: brightness(1.03);
-    }
-
-    /* 羽毛球 icon（按鈕） */
-    .btn .icon{
-      width:18px;height:18px;
-      flex:0 0 18px;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
-    }
-
-    /* hover 羽球移動效果 */
-    .btn .shuttle{
-      position:absolute;
-      right:-24px;
-      top:50%;
-      width:18px;height:18px;
-      transform: translateY(-50%) rotate(20deg);
-      opacity:.0;
-      transition: right .55s ease, opacity .25s ease, transform .55s ease;
-      pointer-events:none;
-      filter: drop-shadow(0 3px 4px rgba(0,0,0,.18));
-    }
-
-    .btn:hover .shuttle{
-      right: 10px;
-      opacity: .95;
-      transform: translateY(-50%) rotate(-12deg);
-    }
-
-    /* 內容卡片（section） */
-    .section{
-      display:none;
-      background: var(--card);
-      padding:18px;
-      border-radius:18px;
-      box-shadow: var(--shadow);
-      max-width: 900px;
-      margin: 0 auto;
-      border: 1px solid rgba(255,255,255,.55);
-      backdrop-filter: blur(8px);
-    }
-
-    .active{ display:block; }
-
-    /* 可愛球場線條裝飾 */
-    .section::before{
-      content:"";
-      display:block;
-      height:10px;
-      border-radius:999px;
-      margin-bottom:14px;
-      background:
-        linear-gradient(90deg,
-          rgba(255,255,255,.0) 0%,
-          rgba(255,255,255,.75) 15%,
-          rgba(255,255,255,.75) 85%,
-          rgba(255,255,255,.0) 100%);
-      opacity:.9;
-    }
-
-    iframe{
-      width:100%;
-      height:2550px;
-      border:none;
-      border-radius:14px;
-      background:white;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
-    }
-
-    .search-box{
-      margin-bottom: 16px;
-      padding: 12px 10px 4px;
-    }
-
-    .search-box h3{
-      margin: 4px 0 12px;
+    .btn {
+      position: relative;
+      padding: 12px 25px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      color: white;
+      border-radius: 50px;
+      background: linear-gradient(180deg, var(--btn-blue) 0%, #1565c0 100%);
+      box-shadow: 0 6px 15px rgba(30,136,255,0.3);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      min-width: 160px;
+      overflow: hidden;
     }
 
-    input[type="text"]{
-      padding: 10px 12px;
-      width: 220px;
-      border: 1px solid rgba(20,50,42,.25);
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(30,136,255,0.4);
+    }
+
+    /* Hover 羽球飛翔效果 */
+    .btn::after {
+      content: '🏸';
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      transform: translateY(-50%) scale(0.5);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .btn:hover::after {
+      right: 12px;
+      opacity: 1;
+      transform: translateY(-50%) scale(1) rotate(-15deg);
+    }
+
+    .btn:active { transform: scale(0.95); }
+
+    /* 內容區塊 */
+    .section {
+      display: none;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      border: 2px solid white;
+      backdrop-filter: blur(10px);
+    }
+
+    .active { 
+      display: block; 
+      animation: slideDown 0.5s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    iframe {
+      width: 100%;
+      height: 800px; /* 報名表單高度縮減，依需要調整 */
+      border: none;
+      border-radius: 12px;
+      background: white;
+    }
+
+    /* 查詢盒樣式 */
+    .search-box {
+      padding: 10px 0 20px;
+      border-bottom: 2px dashed #c8e6c9;
+      margin-bottom: 20px;
+    }
+
+    .search-box h3 { margin-bottom: 15px; font-size: 18px; }
+
+    input[type="text"] {
+      padding: 12px 20px;
+      width: 200px;
+      border: 2px solid #ddd;
       border-radius: 12px;
       outline: none;
-      background: rgba(255,255,255,.85);
-      box-shadow: 0 6px 16px rgba(0,0,0,.06);
-      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+      transition: all 0.3s;
+      font-size: 16px;
+      text-align: center;
+      margin-right: 10px;
     }
 
-    input[type="text"]:focus{
-      border-color: rgba(30,136,255,.65);
-      box-shadow: 0 10px 20px rgba(30,136,255,.18);
-      transform: translateY(-1px);
+    input[type="text"]:focus {
+      border-color: var(--btn-blue);
+      box-shadow: 0 0 10px rgba(30,136,255,0.2);
     }
 
     /* 查詢結果卡片 */
-    .result-card{
-      text-align:left;
-      border-left: 6px solid rgba(255,255,255,.9);
-      padding: 14px 14px;
-      margin: 12px 0;
-      background: rgba(255,255,255,.86);
-      border-bottom: 1px solid rgba(0,0,0,.06);
-      border-radius: 16px;
-      box-shadow: 0 10px 18px rgba(0,0,0,.08);
-      position:relative;
-      overflow:hidden;
+    .result-card {
+      text-align: left;
+      background: white;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 15px;
+      border-left: 8px solid var(--court-green-light);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: relative;
     }
 
-    .result-card::after{
-      content:"";
-      position:absolute;
-      right:-30px;
-      top:-30px;
-      width:110px;height:110px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,204,77,.55), transparent 55%);
-      transform: rotate(10deg);
-      opacity:.8;
-      pointer-events:none;
+    /* 羽球小標籤裝飾 */
+    .result-card::before {
+      content: '🏸';
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 24px;
+      opacity: 0.2;
     }
 
-    .result-card p{
-      margin: 6px 0;
-      line-height: 1.6;
-      font-size: 15px;
+    .result-card p {
+      margin: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 4px;
+      font-size: 16px;
     }
 
-    .result-card strong{
-      color:#0f3a2f;
-    }
+    .result-card strong { color: var(--court-green); margin-right: 5px; }
 
-    .loading{
-      color: rgba(20,50,42,.75);
-      font-style: italic;
-      padding: 10px 0;
-    }
+    .loading { color: var(--court-green); font-weight: bold; padding: 20px; }
 
-    /* 小螢幕優化 */
-    @media (max-width: 520px){
-      .btn{ min-width: 140px; }
-      input[type="text"]{ width: 100%; max-width: 320px; }
-      iframe{ height: 2600px; }
+    @media (max-width: 600px) {
+      input[type="text"] { width: 100%; margin-bottom: 15px; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
@@ -279,102 +230,36 @@
 <body>
   <div class="wrap">
     <div class="title">
-      <div class="title-badge" aria-hidden="true">
-        <!-- 球拍 SVG（會動畫） -->
-        <svg class="racket" viewBox="0 0 64 64">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#1e88ff"/>
-              <stop offset="1" stop-color="#0f62d6"/>
-            </linearGradient>
-          </defs>
-          <!-- 拍面 -->
-          <ellipse cx="28" cy="24" rx="14" ry="18" fill="none" stroke="url(#g1)" stroke-width="4"/>
-          <ellipse cx="28" cy="24" rx="10" ry="14" fill="none" stroke="rgba(30,136,255,.35)" stroke-width="2"/>
-          <!-- 手把 -->
-          <path d="M36 38 L52 54" stroke="#0f3a2f" stroke-width="6" stroke-linecap="round"/>
-          <path d="M38 40 L50 52" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round"/>
+      <div class="title-badge">
+        <svg class="racket-icon" viewBox="0 0 64 64">
+          <ellipse cx="28" cy="24" rx="14" ry="18" fill="none" stroke="#1e88ff" stroke-width="3"/>
+          <path d="M36 38 L52 54" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+          <path d="M20 15 L36 33 M18 28 L38 20" stroke="#1e88ff" stroke-width="1" opacity="0.3"/>
         </svg>
       </div>
       <h1>市教育會報名系統</h1>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn" onclick="showSection('form-section')">
-        <!-- 羽毛球 icon -->
-        <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M16 46 C18 30, 30 16, 46 12" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
-          <path d="M18 50 C24 38, 36 26, 52 20" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-          <path d="M22 54 C30 44, 44 30, 58 26" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-          <path d="M10 54 L30 34" stroke="white" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="10" cy="54" r="4" fill="white"/>
-        </svg>
-        報名表單
-
-        <!-- hover 移動羽球 -->
-        <svg class="shuttle" viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M22 10 L42 10 L38 26 L26 26 Z" fill="white" opacity=".95"/>
-          <path d="M26 26 L38 26 L46 44 L18 44 Z" fill="white" opacity=".95"/>
-          <path d="M18 44 L46 44 L40 56 L24 56 Z" fill="white" opacity=".95"/>
-          <path d="M20 56 L44 56" stroke="rgba(0,0,0,.15)" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </button>
-
-      <button class="btn" onclick="showSection('search-section')">
-        <!-- 羽毛球 icon -->
-        <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M16 46 C18 30, 30 16, 46 12" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
-          <path d="M18 50 C24 38, 36 26, 52 20" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-          <path d="M22 54 C30 44, 44 30, 58 26" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-          <path d="M10 54 L30 34" stroke="white" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="10" cy="54" r="4" fill="white"/>
-        </svg>
-        報名結果查詢
-
-        <!-- hover 移動羽球 -->
-        <svg class="shuttle" viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M22 10 L42 10 L38 26 L26 26 Z" fill="white" opacity=".95"/>
-          <path d="M26 26 L38 26 L46 44 L18 44 Z" fill="white" opacity=".95"/>
-          <path d="M18 44 L46 44 L40 56 L24 56 Z" fill="white" opacity=".95"/>
-          <path d="M20 56 L44 56" stroke="rgba(0,0,0,.15)" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </button>
+      <button class="btn" onclick="showSection('form-section')">報名表單</button>
+      <button class="btn" onclick="showSection('search-section')">報名結果查詢</button>
     </div>
 
-    <!-- 報名表單區塊 -->
     <div id="form-section" class="section active">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScazVR5wTsHqvLmj3yRu12UppwnQlRBbSDZ1hnhHbTNTKkvoQ/viewform">載入中…</iframe>
     </div>
 
-    <!-- 報名查詢區塊 -->
     <div id="search-section" class="section">
       <div class="search-box">
-        <h3>請輸入身分證字號後5碼進行驗證 🏸</h3>
+        <h3>🏸 請輸入身分證後5碼驗證</h3>
         <input type="text" id="idInput" placeholder="例如: 12345" maxlength="5" />
-        <button class="btn" onclick="searchData()">
-          <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
-            <path d="M16 46 C18 30, 30 16, 46 12" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
-            <path d="M18 50 C24 38, 36 26, 52 20" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-            <path d="M22 54 C30 44, 44 30, 58 26" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-            <path d="M10 54 L30 34" stroke="white" stroke-width="5" stroke-linecap="round"/>
-            <circle cx="10" cy="54" r="4" fill="white"/>
-          </svg>
-          查詢
-          <svg class="shuttle" viewBox="0 0 64 64" aria-hidden="true">
-            <path d="M22 10 L42 10 L38 26 L26 26 Z" fill="white" opacity=".95"/>
-            <path d="M26 26 L38 26 L46 44 L18 44 Z" fill="white" opacity=".95"/>
-            <path d="M18 44 L46 44 L40 56 L24 56 Z" fill="white" opacity=".95"/>
-            <path d="M20 56 L44 56" stroke="rgba(0,0,0,.15)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <button class="btn" onclick="searchData()" style="min-width: 120px;">開始查詢</button>
       </div>
-
       <div id="result-area"></div>
     </div>
   </div>
 
   <script>
-    // *** 重要：請將此處替換為你部署的 Google Apps Script URL ***
     var GAS_URL = "https://script.google.com/macros/s/AKfycby0CXFWAvxrTp-OKfZbWX2GFxYV6YnTZfwRIvI4xp8GFidz2lzG4fwuUKMICA6Dc-5p/exec";
 
     function showSection(id) {
@@ -409,37 +294,44 @@
         return;
       }
 
-      resultArea.innerHTML = '<p class="loading">查詢中... 🏸</p>';
+      resultArea.innerHTML = '<p class="loading">正在場上尋找資料... 🏸</p>';
 
       try {
         const response = await fetch(`${GAS_URL}?id=${idValue}`);
         const data = await response.json();
 
         if (data.length === 0) {
-          resultArea.innerHTML = "<p style='color:#b00020;font-weight:700;'>查無資料，請確認輸入是否正確或尚未完成報名。</p>";
+          resultArea.innerHTML = "<p style='color:#d32f2f; font-weight:bold; padding:20px;'>查無資料，請確認身分證後5碼或是否已報名成功。</p>";
           return;
         }
 
         let html = "";
         data.forEach((item) => {
-          html += `
-            <div class="result-card">
-              <p><strong>序號：</strong>${item.serial}</p>
-              <p><strong>組別：</strong>${item.group}</p>
-              <p><strong>選手姓名：</strong>${maskName(item.name)}</p>
-              <p><strong>服務單位：</strong>${item.unit}</p>
-              <p><strong>身分證字號：</strong>${maskID(item.id)}</p>
-              <p><strong>出生年月日：</strong>${formatDate(item.birthday)}</p>
-              <p><strong>戶籍地址：</strong>${item.address}</p>
-            </div>
-          `;
+          // 定義要顯示的欄位與其標籤名
+          const fields = [
+            { label: "序號", value: item.serial },
+            { label: "組別", value: item.group },
+            { label: "選手姓名", value: maskName(item.name) },
+            { label: "服務單位", value: item.unit },
+            { label: "身分證字號", value: maskID(item.id) },
+            { label: "出生年月日", value: formatDate(item.birthday) },
+            { label: "戶籍地址", value: item.address }
+          ];
+
+          html += `<div class="result-card">`;
+          fields.forEach(f => {
+            // 只有當 value 存在且不為空字串時才顯示
+            if (f.value && String(f.value).trim() !== "") {
+              html += `<p><strong>${f.label}：</strong>${f.value}</p>`;
+            }
+          });
+          html += `</div>`;
         });
 
         resultArea.innerHTML = html;
       } catch (error) {
         console.error(error);
-        resultArea.innerHTML =
-          "<p style='color:#b00020;font-weight:700;'>查詢出錯，請稍後再試或檢查 GAS 部署設定。</p>";
+        resultArea.innerHTML = "<p style='color:#d32f2f; font-weight:bold;'>系統連線異常，請稍後再試。</p>";
       }
     }
   </script>

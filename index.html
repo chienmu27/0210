@@ -23,7 +23,6 @@
       margin: 0;
       padding: 30px 15px;
       color: #1b5e20;
-      /* 可愛羽球運動背景 */
       background: 
         radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 20%),
         linear-gradient(135deg, var(--sky-blue) 0%, #c8e6c9 100%);
@@ -31,7 +30,7 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* 垂直靠上 */
+      align-items: flex-start;
     }
 
     .wrap {
@@ -44,43 +43,35 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 標題與球拍動畫 */
-    .title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
+    /* 標題與球拍嵌入 */
+    .title-container {
+      text-align: center;
       margin-bottom: 25px;
     }
 
-    .title-badge {
-      width: 50px; height: 50px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: var(--shadow);
-      display: flex;
+    h1 {
+      margin: 0;
+      font-size: clamp(18px, 4.5vw, 28px);
+      background: var(--court-green);
+      color: white;
+      padding: 10px 30px;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
     }
 
-    .racket-icon {
-      width: 32px; height: 32px;
+    .racket-inline {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
       animation: racketSwing 2s ease-in-out infinite;
     }
 
     @keyframes racketSwing {
       0%, 100% { transform: rotate(-15deg); }
       50% { transform: rotate(20deg); }
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(20px, 5vw, 28px);
-      background: var(--court-green);
-      color: white;
-      padding: 8px 25px;
-      border-radius: 50px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     /* 導覽按鈕區 */
@@ -130,8 +121,6 @@
       transform: translateY(-50%) scale(1) rotate(-15deg);
     }
 
-    .btn:active { transform: scale(0.95); }
-
     /* 內容區塊 */
     .section {
       display: none;
@@ -153,22 +142,20 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* 表單高度改為 2500px */
     iframe {
       width: 100%;
-      height: 2500px; /* 報名表單高度縮減，依需要調整 */
+      height: 2500px;
       border: none;
       border-radius: 12px;
       background: white;
     }
 
-    /* 查詢盒樣式 */
     .search-box {
       padding: 10px 0 20px;
       border-bottom: 2px dashed #c8e6c9;
       margin-bottom: 20px;
     }
-
-    .search-box h3 { margin-bottom: 15px; font-size: 18px; }
 
     input[type="text"] {
       padding: 12px 20px;
@@ -187,7 +174,6 @@
       box-shadow: 0 0 10px rgba(30,136,255,0.2);
     }
 
-    /* 查詢結果卡片 */
     .result-card {
       text-align: left;
       background: white;
@@ -199,7 +185,6 @@
       position: relative;
     }
 
-    /* 羽球小標籤裝飾 */
     .result-card::before {
       content: '🏸';
       position: absolute;
@@ -223,21 +208,22 @@
     @media (max-width: 600px) {
       input[type="text"] { width: 100%; margin-bottom: 15px; }
       .btn { width: 100%; }
+      h1 { padding: 10px 20px; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="title">
-      <div class="title-badge">
-        <svg class="racket-icon" viewBox="0 0 64 64">
-          <ellipse cx="28" cy="24" rx="14" ry="18" fill="none" stroke="#1e88ff" stroke-width="3"/>
-          <path d="M36 38 L52 54" stroke="#333" stroke-width="5" stroke-linecap="round"/>
-          <path d="M20 15 L36 33 M18 28 L38 20" stroke="#1e88ff" stroke-width="1" opacity="0.3"/>
+    <div class="title-container">
+      <h1>
+        <svg class="racket-inline" viewBox="0 0 64 64">
+          <ellipse cx="28" cy="24" rx="14" ry="18" fill="none" stroke="white" stroke-width="4"/>
+          <path d="M36 38 L52 54" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <path d="M20 15 L36 33 M18 28 L38 20" stroke="white" stroke-width="1.5" opacity="0.4"/>
         </svg>
-      </div>
-      <h1>市教育會報名系統</h1>
+        市教育會報名系統
+      </h1>
     </div>
 
     <div class="nav-buttons">
@@ -307,7 +293,6 @@
 
         let html = "";
         data.forEach((item) => {
-          // 定義要顯示的欄位與其標籤名
           const fields = [
             { label: "序號", value: item.serial },
             { label: "組別", value: item.group },
@@ -320,7 +305,6 @@
 
           html += `<div class="result-card">`;
           fields.forEach(f => {
-            // 只有當 value 存在且不為空字串時才顯示
             if (f.value && String(f.value).trim() !== "") {
               html += `<p><strong>${f.label}：</strong>${f.value}</p>`;
             }

@@ -4,231 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>市教育會報名與查詢系統</title>
-
   <style>
     :root {
       --court-green: #2e7d32;
       --court-green-light: #4caf50;
-      --shuttle-white: #ffffff;
       --sky-blue: #e3f2fd;
-      --accent-yellow: #fff176;
       --btn-blue: #1e88ff;
+      --btn-red: #d32f2f;
       --shadow: 0 12px 30px rgba(0,0,0,0.1);
     }
-
     * { box-sizing: border-box; }
-
     body {
       font-family: "Microsoft JhengHei", system-ui, sans-serif;
-      margin: 0;
-      padding: 30px 15px;
-      color: #1b5e20;
-      background: 
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 20%),
-        linear-gradient(135deg, var(--sky-blue) 0%, #c8e6c9 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      margin: 0; padding: 30px 15px;
+      background: linear-gradient(135deg, var(--sky-blue) 0%, #c8e6c9 100%);
+      background-attachment: fixed; min-height: 100vh;
+      display: flex; justify-content: center;
     }
-
-    .wrap {
-      width: min(900px, 100%);
-      animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 標題與球拍嵌入 */
-    .title-container {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
+    .wrap { width: min(900px, 100%); }
+    .title-container { text-align: center; margin-bottom: 25px; }
     h1 {
-      margin: 0;
+      background: var(--court-green); color: white;
+      padding: 10px 30px; border-radius: 50px;
+      display: inline-flex; align-items: center; gap: 12px;
       font-size: clamp(18px, 4.5vw, 28px);
-      background: var(--court-green);
-      color: white;
-      padding: 10px 30px;
-      border-radius: 50px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
     }
-
-    .racket-inline {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-      animation: racketSwing 2s ease-in-out infinite;
-    }
-
-    @keyframes racketSwing {
-      0%, 100% { transform: rotate(-15deg); }
-      50% { transform: rotate(20deg); }
-    }
-
-    /* 導覽按鈕區 */
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-
+    .nav-buttons { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
     .btn {
-      position: relative;
-      padding: 12px 25px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-      color: white;
-      border-radius: 50px;
+      padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer;
+      border: none; color: white; border-radius: 50px;
       background: linear-gradient(180deg, var(--btn-blue) 0%, #1565c0 100%);
-      box-shadow: 0 6px 15px rgba(30,136,255,0.3);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      min-width: 160px;
-      overflow: hidden;
+      transition: 0.3s; min-width: 160px;
     }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(30,136,255,0.4);
+    .btn:hover { transform: translateY(-3px); }
+    .btn-delete {
+      background: linear-gradient(180deg, #ff5252 0%, var(--btn-red) 100%);
+      padding: 8px 20px; width: 100%; margin-top: 15px; font-weight: bold;
     }
-
-    /* Hover 羽球飛翔效果 */
-    .btn::after {
-      content: '🏸';
-      position: absolute;
-      right: -30px;
-      top: 50%;
-      transform: translateY(-50%) scale(0.5);
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-
-    .btn:hover::after {
-      right: 12px;
-      opacity: 1;
-      transform: translateY(-50%) scale(1) rotate(-15deg);
-    }
-
-    /* 內容區塊 */
     .section {
-      display: none;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      border: 2px solid white;
-      backdrop-filter: blur(10px);
+      display: none; background: rgba(255, 255, 255, 0.9);
+      padding: 25px; border-radius: 20px; box-shadow: var(--shadow);
     }
-
-    .active { 
-      display: block; 
-      animation: slideDown 0.5s ease-out;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 表單高度改為 2500px */
-    iframe {
-      width: 100%;
-      height: 2500px;
-      border: none;
-      border-radius: 12px;
-      background: white;
-    }
-
-    .search-box {
-      padding: 10px 0 20px;
-      border-bottom: 2px dashed #c8e6c9;
-      margin-bottom: 20px;
-    }
-
+    .active { display: block; }
+    iframe { width: 100%; height: 2500px; border: none; border-radius: 12px; background: white; }
+    .search-box { padding-bottom: 20px; border-bottom: 2px dashed #c8e6c9; margin-bottom: 20px; text-align: center;}
     input[type="text"] {
-      padding: 12px 20px;
-      width: 200px;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      outline: none;
-      transition: all 0.3s;
-      font-size: 16px;
-      text-align: center;
-      margin-right: 10px;
+      padding: 12px; width: 220px; border: 2px solid #ddd; border-radius: 12px;
+      font-size: 16px; text-align: center;
     }
-
-    input[type="text"]:focus {
-      border-color: var(--btn-blue);
-      box-shadow: 0 0 10px rgba(30,136,255,0.2);
-    }
-
     .result-card {
-      text-align: left;
-      background: white;
-      padding: 20px;
-      margin: 15px 0;
-      border-radius: 15px;
-      border-left: 8px solid var(--court-green-light);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      position: relative;
+      background: white; padding: 25px; margin: 20px 0;
+      border-radius: 15px; border-left: 10px solid var(--court-green-light);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left;
     }
-
-    .result-card::before {
-      content: '🏸';
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      font-size: 24px;
-      opacity: 0.2;
-    }
-
-    .result-card p {
-      margin: 8px 0;
-      border-bottom: 1px solid #f0f0f0;
-      padding-bottom: 4px;
-      font-size: 16px;
-    }
-
+    .player-info { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee; }
+    .player-info:last-of-type { border-bottom: none; }
+    .result-card p { margin: 6px 0; font-size: 16px; line-height: 1.5; }
     .result-card strong { color: var(--court-green); margin-right: 5px; }
-
-    .loading { color: var(--court-green); font-weight: bold; padding: 20px; }
-
-    @media (max-width: 600px) {
-      input[type="text"] { width: 100%; margin-bottom: 15px; }
-      .btn { width: 100%; }
-      h1 { padding: 10px 20px; }
-    }
+    .loading { color: var(--court-green); font-weight: bold; text-align: center; }
   </style>
 </head>
-
 <body>
   <div class="wrap">
-    <div class="title-container">
-      <h1>
-        <svg class="racket-inline" viewBox="0 0 64 64">
-          <ellipse cx="28" cy="24" rx="14" ry="18" fill="none" stroke="white" stroke-width="4"/>
-          <path d="M36 38 L52 54" stroke="white" stroke-width="6" stroke-linecap="round"/>
-          <path d="M20 15 L36 33 M18 28 L38 20" stroke="white" stroke-width="1.5" opacity="0.4"/>
-        </svg>
-        市教育會報名系統
-      </h1>
-    </div>
-
+    <div class="title-container"><h1>🏸 市教育會報名系統</h1></div>
     <div class="nav-buttons">
       <button class="btn" onclick="showSection('form-section')">報名表單</button>
-      <button class="btn" onclick="showSection('search-section')">報名結果查詢</button>
+      <button class="btn" onclick="showSection('search-section')">報名查詢/刪除</button>
     </div>
 
     <div id="form-section" class="section active">
@@ -237,85 +78,79 @@
 
     <div id="search-section" class="section">
       <div class="search-box">
-        <h3>🏸 請輸入身分證後5碼驗證</h3>
+        <h3>🏸 輸入身分證後5碼驗證查詢</h3>
         <input type="text" id="idInput" placeholder="例如: 12345" maxlength="5" />
-        <button class="btn" onclick="searchData()" style="min-width: 120px;">開始查詢</button>
+        <button class="btn" onclick="searchData()" style="min-width: 100px; margin-top:10px;">查詢</button>
       </div>
       <div id="result-area"></div>
     </div>
   </div>
 
   <script>
-    var GAS_URL = "https://script.google.com/macros/s/AKfycbz5l-uuxjIjznmUJ0EnQ5CxFdB5DvlUEAMMukfr0W3j1TM0n-J7YlVxdfnnMG_wHLWo/exec";
+    // 重要：請務必替換為您最新部署的 GAS 網頁應用程式網址
+    var GAS_URL = "https://script.google.com/macros/s/AKfycbzM4c9cdstxc92gSMJgVwl86XFk5zQiPv5TpCR7sCVHU9MQHML7P8a_zCv3RDpYkFIs/exec"; 
 
     function showSection(id) {
-      document.querySelectorAll(".section").forEach((s) => s.classList.remove("active"));
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
-    }
-
-    function maskName(name) {
-      if (!name) return "";
-      if (name.length <= 2) return name.substring(0, 1) + "＊";
-      return name.substring(0, 1) + "＊" + name.substring(name.length - 1);
-    }
-
-    function maskID(id) {
-      if (!id || id.length < 10) return id;
-      return id.substring(0, 4) + "****" + id.substring(id.length - 2);
-    }
-
-    function formatDate(dateStr) {
-      if (!dateStr) return "";
-      let d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
-      return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
     }
 
     async function searchData() {
       const idValue = document.getElementById("idInput").value.trim();
       const resultArea = document.getElementById("result-area");
+      if (idValue.length !== 5) { alert("請輸入正確的身分證後5碼"); return; }
 
-      if (idValue.length !== 5) {
-        alert("請輸入正確的身分證後5碼");
-        return;
-      }
-
-      resultArea.innerHTML = '<p class="loading">正在場上尋找資料... 🏸</p>';
-
+      resultArea.innerHTML = '<p class="loading">正在尋找您的名單... 🏸</p>';
       try {
-        const response = await fetch(`${GAS_URL}?id=${idValue}`);
+        const response = await fetch(`${GAS_URL}?action=search&id=${idValue}`);
         const data = await response.json();
 
         if (data.length === 0) {
-          resultArea.innerHTML = "<p style='color:#d32f2f; font-weight:bold; padding:20px;'>查無資料，請確認身分證後5碼或是否已報名成功。</p>";
+          resultArea.innerHTML = "<p style='text-align:center; color:#d32f2f; font-weight:bold; padding:20px;'>查無報名資料。</p>";
           return;
         }
 
         let html = "";
-        data.forEach((item) => {
-          const fields = [
-            { label: "序號", value: item.serial },
-            { label: "組別", value: item.group },
-            { label: "選手姓名", value: maskName(item.name) },
-            { label: "服務單位", value: item.unit },
-            { label: "身分證字號", value: maskID(item.id) },
-            { label: "出生年月日", value: formatDate(item.birthday) },
-            { label: "戶籍地址", value: item.address }
-          ];
-
-          html += `<div class="result-card">`;
-          fields.forEach(f => {
-            if (f.value && String(f.value).trim() !== "") {
-              html += `<p><strong>${f.label}：</strong>${f.value}</p>`;
-            }
+        data.forEach(entry => {
+          html += `<div class="result-card">
+                    <p><strong>組別：</strong>${entry.group}</p>
+                    <p><strong>組別序號：</strong>${entry.serial}</p><hr style="border:0; border-top:1px solid #eee; margin:15px 0;">`;
+          
+          entry.players.forEach((p, idx) => {
+            html += `<div class="player-info">
+                      <p><strong>選手姓名：</strong>${p.name}</p>
+                      <p><strong>服務單位：</strong>${p.unit}</p>
+                      <p><strong>身分證字號：</strong>${p.id}</p>
+                      <p><strong>出生年月日：</strong>${p.birthday}</p>
+                    </div>`;
           });
-          html += `</div>`;
+          
+          html += `<button class="btn btn-delete" onclick="deleteEntry('${idValue}', '${entry.group}')">刪除整筆報名資料</button></div>`;
         });
-
         resultArea.innerHTML = html;
-      } catch (error) {
-        console.error(error);
-        resultArea.innerHTML = "<p style='color:#d32f2f; font-weight:bold;'>系統連線異常，請稍後再試。</p>";
+      } catch (e) {
+        resultArea.innerHTML = "<p style='text-align:center; color:red;'>系統連線發生錯誤。</p>";
+      }
+    }
+
+    async function deleteEntry(id5, group) {
+      if (!confirm(`確定要刪除「${group}」的這筆報名資料嗎？`)) return;
+      
+      const resultArea = document.getElementById("result-area");
+      resultArea.innerHTML = '<p class="loading">正在刪除資料並重整名冊... 🏸</p>';
+
+      try {
+        const response = await fetch(`${GAS_URL}?action=delete&id=${id5}&group=${encodeURIComponent(group)}`);
+        const res = await response.json();
+        if (res.status === "success") {
+          alert("刪除成功！");
+          searchData(); 
+        } else {
+          alert("刪除失敗：" + res.message);
+          searchData();
+        }
+      } catch (e) {
+        alert("請求發生錯誤。");
       }
     }
   </script>
